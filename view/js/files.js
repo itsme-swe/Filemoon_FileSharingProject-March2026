@@ -53,13 +53,14 @@ const uploadFile = async (e) => {
     const { data } = await axios.post("/api/file", formData, options);
     toast.success(`${data.filename} has been uploaded !`);
     fetchFiles();
-    uploadBtn.disabled = false;
     progress.style.width = 0;
     progress.innerHTML = "";
     form.reset();
     toggleDrawer();
   } catch (error) {
     toast.error(error.response ? error.response.data.message : error.message);
+  } finally {
+    uploadBtn.disabled = false;
   }
 };
 
@@ -81,7 +82,7 @@ const fetchFiles = async () => {
             <td>${moment(file.createdAt).format("DD MMM YYYY, hh:mm A")}</td>
             <td>
               <div class="spcae-x-3">
-                <button class="bg-rose-400 px-2 py-1 text-white hover:bg-rose-600 rounded" onclick="deleteFile('${file._id}')">
+                <button class="bg-rose-400 px-2 py-1 text-white hover:bg-rose-600 rounded" onclick="deleteFile('${file._id}', this)">
                   <i class="ri-delete-bin-6-line"></i>
                 </button>
 
@@ -103,13 +104,18 @@ const fetchFiles = async () => {
   }
 };
 
-const deleteFile = async (id) => {
+const deleteFile = async (id, button) => {
   try {
+    button.innerHTML = '<i class="ri-loader-fill"></i>';
+    button.disabled = true;
     await axios.delete(`/api/file/${id}`);
     toast.success("File deleted successfully");
     fetchFiles();
   } catch (error) {
     toast.error(error.response ? error.response.data.message : error.message);
+  } finally {
+    button.innerHTML = '<i class="ri-delete-bin-6-line"></i>';
+    button.disabled = false;
   }
 };
 
