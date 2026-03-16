@@ -1,0 +1,27 @@
+CSS Padding-----
+p- padding
+pl- padding left
+pr- padding right
+pt - padding top
+pb - padding bottom
+
+CSS Margin------
+m- margin ---- m-4
+ml- margin left
+mr- margin right
+mt- margin top
+mb- margin bottom
+
+More essential tailwind properties----------
+w-full -- 100% width
+w-6/12 -- 50% width
+w-fit -- fit-content  -- fit according to content
+
+h-full - height 100%
+h-screen -- height 100vh
+h-min-screen -- min height 100vh
+
+flex
+justify-between 
+justify-center
+item-center
