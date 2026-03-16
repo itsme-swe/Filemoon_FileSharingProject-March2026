@@ -85,7 +85,7 @@ const fetchFiles = async () => {
                   <i class="ri-delete-bin-6-line"></i>
                 </button>
 
-                <button class="bg-green-400 px-2 py-1 text-white hover:bg-green-700 rounded" onclick="downloadFile('${file._id}', '${file.filename}')">
+                <button class="bg-green-400 px-2 py-1 text-white hover:bg-green-700 rounded" onclick="downloadFile('${file._id}', '${file.filename}', this)">
                   <i class="ri-download-line"></i>
                 </button>
 
@@ -113,8 +113,10 @@ const deleteFile = async (id) => {
   }
 };
 
-const downloadFile = async (id, filename) => {
+const downloadFile = async (id, filename, button) => {
   try {
+    button.innerHTML = '<i class="ri-loader-fill"></i>';
+    button.disabled = true;
     const options = {
       responseType: "blob",
     };
@@ -135,5 +137,8 @@ const downloadFile = async (id, filename) => {
     const { message } = JSON.parse(err);
     toast.error(message);
     console.log(err);
+  } finally {
+    button.innerHTML = '<i class="ri-download-line"></i>';
+    button.disabled = false;
   }
 };

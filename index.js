@@ -21,7 +21,12 @@ const storage = multer.diskStorage({
     cb(null, uniqueName);
   },
 });
-const upload = multer({ storage });
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 200 * 1000 * 1000,
+  },
+});
 
 const { signup, login } = require("./controller/user.controller");
 const {
