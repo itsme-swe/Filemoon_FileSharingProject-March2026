@@ -9,7 +9,7 @@ const connection = nodemailer.createTransport({
   },
 });
 
-const getEmailTemplate = () => {
+const getEmailTemplate = (link) => {
   return `
       <!DOCTYPE html>
         <html>
@@ -55,7 +55,7 @@ const getEmailTemplate = () => {
 
                                     <!-- CTA Button -->
                                     <p style="text-align:center; margin:25px 0;">
-                                        <a href="{{file_link}}" 
+                                        <a href="${link}" download="" 
                                           style="background-color:#2d89ef; color:#ffffff; padding:12px 25px; text-decoration:none; border-radius:5px; font-size:14px; display:inline-block;">
                                           Download File
                                         </a>
@@ -98,11 +98,13 @@ const getEmailTemplate = () => {
 
 const shareFile = async (req, res) => {
   try {
+    const { email, fileId } = req.body;
+    const link = `http://localhost:8080/api/file/download/${fileId}`;
     const options = {
-      from: process.env.SMTP_EMAIL,
-      to: "harshfrmjpr@gmail.com",
-      subject: "Sending first email",
-      html: getEmailTemplate(),
+      from: process.env.EMAIL,
+      to: email,
+      subject: "Filemoon - New file received",
+      html: getEmailTemplate(link),
     };
     await connection.sendMail(options);
     res.status(201).json({ message: "Email sent successfully!!" });
