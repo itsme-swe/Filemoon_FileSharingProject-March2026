@@ -12,6 +12,12 @@ const shareSchema = new Schema(
       type: String,
       required: true,
     },
+
+    file: {
+      type: mongoose.Types.ObjectId,
+      ref: "File",
+      required: true,
+    },
   },
   { timestamps: true },
 );
