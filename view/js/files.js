@@ -155,8 +155,8 @@ const openModelForShare = (id, filename) => {
     html: `
         <form class="text-left flex flex-col gap-6" onsubmit="shareFile('${id}', event)">
             <h1 class="font-medium text-black text-2xl">Email id</h1>
-            <input required class="border border-gray-300 w-full p-3 rounded" placeholder="mai@gmail.com" name="email"/>
-            <button class="bg-indigo-400 hover:bg-indigo-500 text-white rounded py-3 px-8 w-fit font-medium">Send</button>
+            <input type="email" required class="border border-gray-300 w-full p-3 rounded" placeholder="mai@gmail.com" name="email"/>
+            <button id="send-btn" class="bg-indigo-400 hover:bg-indigo-500 text-white rounded py-3 px-8 w-fit font-medium">Send</button>
 
             <div class="flex items-center gap-2">
                 <p class="text-gray-500">You are sharing - </p>
@@ -168,18 +168,22 @@ const openModelForShare = (id, filename) => {
 };
 
 const shareFile = async (id, e) => {
+  const sendButton = document.getElementById("send-btn");
+  const form = e.target;
   try {
     e.preventDefault();
-    const form = e.target;
+    sendButton.disabled = true;
+
     const email = form.elements.email.value.trim();
     const payload = {
       email: email,
       fileId: id,
     };
-
-    const { data } = await axios.post("/api/share", payload);
-    console.log(data);
+    await axios.post("/api/share", payload);
+    toast.success("File sent successfully");
   } catch (error) {
     toast.error(error.message ? error.response.data.message : error.message);
+  } finally {
+    Swal.close();
   }
 };

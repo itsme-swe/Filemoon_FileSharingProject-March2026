@@ -87,3 +87,8 @@ app.get("/api/file/download/:id", downloadFile);
 app.get("/api/dashboard", fetchDashboard);
 app.post("/api/token/verify", verifyToken);
 app.post("/api/share", shareFile);
+
+// 🌟 Not found routes
+app.use((req, res) => {
+  res.status(404).json({ message: "Endpoint not found" });
+});
