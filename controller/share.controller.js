@@ -99,7 +99,7 @@ const getEmailTemplate = (link) => {
 const shareFile = async (req, res) => {
   try {
     const { email, fileId } = req.body;
-    const link = `http://localhost:8080/api/file/download/${fileId}`;
+    const link = `${process.env.DOMAIN}/api/file/download/${fileId}`;
     const options = {
       from: process.env.EMAIL,
       to: email,
