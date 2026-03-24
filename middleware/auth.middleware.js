@@ -5,18 +5,18 @@ const AuthMiddleware = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
 
-    //1️⃣
+    // 1️⃣
     if (!authorization)
       return res.status(401).json({ message: "Invalid request" });
 
     //🔸 Here we are checking the type of token is "Bearer"
     const [type, token] = authorization.split(" "); // Destructuring an array -- 0 index_value will store in type and 1 index_value will store in token
 
-    //2️⃣
+    // 2️⃣
     if (type !== "Bearer")
       return res.status(401).json({ message: "Invalid request" });
 
-    //3️⃣
+    // 3️⃣
     const user = await jwt.verify(token, process.env.JWT_SECRET);
     req.user = user; // 4️⃣
 
