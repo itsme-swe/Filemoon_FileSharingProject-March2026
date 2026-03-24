@@ -82,11 +82,11 @@ app.post("/api/signup", signup);
 app.post("/api/login", login);
 app.post("/api/file", upload.single("file"), createFile); //🌟 Here we are using route level middleware
 app.get("/api/file", AuthMiddleware, fetchFiles);
-app.delete("/api/file/:id", deleteFile);
+app.delete("/api/file/:id", AuthMiddleware, deleteFile);
 app.get("/api/file/download/:id", downloadFile);
-app.get("/api/dashboard", fetchDashboard);
+app.get("/api/dashboard", AuthMiddleware, fetchDashboard);
 app.post("/api/token/verify", verifyToken);
-app.post("/api/share", shareFile);
+app.post("/api/share", AuthMiddleware, shareFile);
 
 // 🌟 Not found routes
 app.use((req, res) => {
