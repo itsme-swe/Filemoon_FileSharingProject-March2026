@@ -4,7 +4,6 @@ dotenv.config();
 const mongoose = require("mongoose");
 mongoose.connect(process.env.DB);
 
-const root = process.cwd();
 const express = require("express");
 const { v4: uniqueID } = require("uuid");
 const cors = require("cors");
@@ -39,6 +38,7 @@ const { fetchDashboard } = require("./controller/dashboard.controller");
 const { verifyToken } = require("./controller/token.controller");
 const { shareFile } = require("./controller/share.controller");
 const getPath = require("./utils/getPath.utilis");
+const AuthMiddleware = require("./middleware/auth.middleware");
 const app = express();
 app.listen(process.env.PORT || 8080);
 
@@ -77,11 +77,11 @@ app.get("/history", (req, res) => {
   res.sendFile(getPath("app/history.html"));
 });
 
-// 🌟 Backend APIs end points
+// 🌟 Backend APIs (End Points)
 app.post("/api/signup", signup);
 app.post("/api/login", login);
 app.post("/api/file", upload.single("file"), createFile); //🌟 Here we are using route level middleware
-app.get("/api/file", fetchFiles);
+app.get("/api/file", AuthMiddleware, fetchFiles);
 app.delete("/api/file/:id", deleteFile);
 app.get("/api/file/download/:id", downloadFile);
 app.get("/api/dashboard", fetchDashboard);
