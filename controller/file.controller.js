@@ -33,7 +33,9 @@ const createFile = async (req, res) => {
 
 const fetchFiles = async (req, res) => {
   try {
-    const files = await FileModel.find({ user: req.user.id });
+    const files = await FileModel.find({ user: req.user.id }).sort({
+      createdAt: -1,
+    });
     res.status(201).json(files);
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -31,7 +31,7 @@ const fetchHistory = async () => {
       console.log(item);
       const historyUi = ` 
       <tr class="text-gray-600 border-b border-gray-100">
-            <td class="py-4 pl-5">${item.file.filename}</td>
+            <td class="py-4 pl-5 capitalize">${item.file.filename}</td>
             <td>${item.receiverEmail}</td>
             <td>${moment(item.createdAt).format("DD MMM YYYY, hh:mm A")}</td>
       </tr>`;
