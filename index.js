@@ -6,7 +6,6 @@ mongoose.connect(process.env.DB);
 
 const express = require("express");
 const { v4: uniqueID } = require("uuid");
-const cors = require("cors");
 
 const multer = require("multer");
 const storage = multer.diskStorage({
@@ -36,7 +35,7 @@ const {
 } = require("./controller/file.controller");
 const { fetchDashboard } = require("./controller/dashboard.controller");
 const { verifyToken } = require("./controller/token.controller");
-const { shareFile } = require("./controller/share.controller");
+const { shareFile, fetchShareFile } = require("./controller/share.controller");
 const getPath = require("./utils/getPath.utilis");
 const AuthMiddleware = require("./middleware/auth.middleware");
 const app = express();
@@ -46,11 +45,6 @@ app.listen(process.env.PORT || 8080);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static("view"));
-app.use(
-  cors({
-    origin: "http://127.0.0.1:7976/view/signup.html",
-  }),
-);
 
 //🌟 Frontend UI routing
 app.get("/signup", (req, res) => {
@@ -80,13 +74,14 @@ app.get("/history", (req, res) => {
 // 🌟 Backend APIs (End Points)
 app.post("/api/signup", signup);
 app.post("/api/login", login);
-app.post("/api/file", upload.single("file"), createFile); //🌟 Here we are using route level middleware
+app.post("/api/file", AuthMiddleware, upload.single("file"), createFile); //🌟 Here we are using route level middleware
 app.get("/api/file", AuthMiddleware, fetchFiles);
 app.delete("/api/file/:id", AuthMiddleware, deleteFile);
 app.get("/api/file/download/:id", downloadFile);
 app.get("/api/dashboard", AuthMiddleware, fetchDashboard);
 app.post("/api/token/verify", verifyToken);
 app.post("/api/share", AuthMiddleware, shareFile);
+app.get("/api/share", AuthMiddleware, fetchShareFile);
 
 // 🌟 Not found routes
 app.use((req, res) => {

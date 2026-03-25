@@ -106,8 +106,31 @@ const shareFile = async (req, res) => {
       subject: "Filemoon - New file received",
       html: getEmailTemplate(link),
     };
-    await connection.sendMail(options);
+
+    const payload = {
+      senderId: req.user.id,
+      receiverEmail: email,
+      file: fileId,
+    };
+
+    //⭐ To avoid writing await multiple times, we are using Promise.all([])
+    await Promise.all([
+      connection.sendMail(options),
+      ShareModel.create(payload),
+    ]);
+
     res.status(201).json({ message: "Email sent successfully!!" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+const fetchShareFile = async (req, res) => {
+  try {
+    const history = await ShareModel.find({ user: req.user.senderId })
+      //   .populate("senderId", "fullname email mobile -_id")
+      .populate("file");
+    res.status(201).json(history);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -115,4 +138,5 @@ const shareFile = async (req, res) => {
 
 module.exports = {
   shareFile,
+  fetchShareFile,
 };

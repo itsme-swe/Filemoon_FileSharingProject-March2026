@@ -4,6 +4,15 @@ window.onload = () => {
   fetchFiles();
 };
 
+const getToken = () => {
+  const options = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("authToken")}`,
+    },
+  };
+  return options;
+};
+
 //🌟 Third party library used to give notification on UI
 const toast = new Notyf({
   position: { x: "center", y: "top" },
@@ -26,10 +35,10 @@ const toggleDrawer = () => {
 };
 
 const uploadFile = async (e) => {
+  e.preventDefault();
+  const uploadBtn = document.getElementById("upload-btn");
   try {
-    e.preventDefault();
     const progress = document.getElementById("progress");
-    const uploadBtn = document.getElementById("upload-btn");
     const form = e.target;
     const formData = new FormData(form);
 
@@ -48,6 +57,7 @@ const uploadFile = async (e) => {
         progress.style.width = percentValue + "%";
         progress.innerHTML = percentValue + "%";
       },
+      ...getToken(),
     };
     uploadBtn.disabled = true;
     const { data } = await axios.post("/api/file", formData, options);
@@ -70,7 +80,7 @@ const getSize = (size) => {
 };
 const fetchFiles = async () => {
   try {
-    const { data } = await axios.get("/api/file");
+    const { data } = await axios.get("/api/file", getToken());
     const table = document.getElementById("files-table");
     table.innerHTML = "";
     for (let file of data) {
@@ -99,7 +109,7 @@ const fetchFiles = async () => {
           `;
       table.innerHTML += ui;
     }
-  } catch (err) {
+  } catch (error) {
     toast.error(error.response ? error.response.data.message : error.message);
   }
 };
@@ -108,7 +118,7 @@ const deleteFile = async (id, button) => {
   try {
     button.innerHTML = '<i class="ri-loader-fill"></i>';
     button.disabled = true;
-    await axios.delete(`/api/file/${id}`);
+    await axios.delete(`/api/file/${id}`, getToken());
     toast.success("File deleted successfully");
     fetchFiles();
   } catch (error) {
@@ -125,6 +135,7 @@ const downloadFile = async (id, filename, button) => {
     button.disabled = true;
     const options = {
       responseType: "blob",
+      ...getToken(),
     };
     const { data } = await axios.get(`/api/file/download/${id}`, options);
     const extCode = data.type.split("/").pop();
@@ -179,7 +190,7 @@ const shareFile = async (id, e) => {
       email: email,
       fileId: id,
     };
-    await axios.post("/api/share", payload);
+    await axios.post("/api/share", payload, getToken());
     toast.success("File sent successfully");
   } catch (error) {
     toast.error(error.message ? error.response.data.message : error.message);
