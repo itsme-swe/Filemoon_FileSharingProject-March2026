@@ -2,7 +2,7 @@ const { Schema, model, default: mongoose } = require("mongoose");
 
 const shareSchema = new Schema(
   {
-    senderId: {
+    sender: {
       type: mongoose.Types.ObjectId,
       ref: "User",
       required: true,

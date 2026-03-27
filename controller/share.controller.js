@@ -11,89 +11,57 @@ const connection = nodemailer.createTransport({
 
 const getEmailTemplate = (link) => {
   return `
-      <!DOCTYPE html>
-        <html>
-        <head>
-            <meta charset="UTF-8">
-            <title>File Access Notification</title>
-        </head>
-        <body style="margin:0; padding:0; background-color:#f4f6f8; font-family:Arial, sans-serif;">
-
-            <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f8; padding:20px 0;">
+        <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8" />
+                <title>Your File is Ready - Filemoon</title>
+            </head>
+            <body style="margin:0; padding:0; font-family:Arial, sans-serif; background-color:#f4f4f4;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f4f4; padding: 40px 0;">
+        <tr>
+            <td align="center">
+            <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff; padding: 30px; border-radius:8px; box-shadow:0 2px 4px rgba(0,0,0,0.1);">
                 <tr>
-                    <td align="center">
-
-                        <!-- Container -->
-                        <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff; border-radius:8px; overflow:hidden;">
-
-                            <!-- Header -->
-                            <tr>
-                                <td style="background-color:#2d89ef; color:#ffffff; padding:20px; text-align:center; font-size:22px; font-weight:bold;">
-                                    File Shared With You
-                                </td>
-                            </tr>
-
-                            <!-- Body -->
-                            <tr>
-                                <td style="padding:30px; color:#333333; font-size:14px; line-height:1.6;">
-
-                                    <p style="margin:0 0 15px 0;">Hi <strong>{{recipient_name}}</strong>,</p>
-
-                                    <p style="margin:0 0 15px 0;">
-                                        A file has been securely shared with you. You can access it using the link below.
-                                    </p>
-
-                                    <!-- File Info Box -->
-                                    <table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f9fafb; border:1px solid #e0e0e0; border-radius:6px; margin:20px 0;">
-                                        <tr>
-                                            <td style="padding:15px;">
-                                                <p style="margin:0; font-size:14px;"><strong>File Name:</strong> {{file_name}}</p>
-                                                <p style="margin:5px 0 0 0; font-size:14px;"><strong>File Size:</strong> {{file_size}}</p>
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                    <!-- CTA Button -->
-                                    <p style="text-align:center; margin:25px 0;">
-                                        <a href="${link}" download="" 
-                                          style="background-color:#2d89ef; color:#ffffff; padding:12px 25px; text-decoration:none; border-radius:5px; font-size:14px; display:inline-block;">
-                                          Download File
-                                        </a>
-                                    </p>
-
-                                    <!-- Expiration Notice -->
-                                    <p style="margin:20px 0 0 0; font-size:13px; color:#d9534f;">
-                                        ⚠ This link will expire on <strong>{{expiry_date}}</strong>. Please download the file before it becomes unavailable.
-                                    </p>
-
-                                    <p style="margin:20px 0 0 0;">
-                                        If you did not expect this file, please ignore this email or contact support.
-                                    </p>
-
-                                </td>
-                            </tr>
-
-                            <!-- Footer -->
-                            <tr>
-                                <td style="background-color:#f4f6f8; padding:20px; text-align:center; font-size:12px; color:#777777;">
-                                    © {{year}} Your Company Name<br>
-                                    Need help? Contact us at 
-                                    <a href="mailto:support@yourcompany.com" style="color:#2d89ef; text-decoration:none;">
-                                        support@yourcompany.com
-                                    </a>
-                                </td>
-                            </tr>
-
-                        </table>
-                        <!-- End Container -->
-
-                    </td>
+                <td align="center" style="padding-bottom: 20px;">
+                    <h1 style="margin: 0; font-size: 28px; color: #1e88e5;">Filemoon</h1>
+                    <p style="margin: 5px 0 0 0; font-size: 14px; color: #777;">India's best file sharing platform</p>
+                </td>
+                </tr>
+                <tr>
+                <td align="center" style="padding: 30px 0 10px 0;">
+                    <h2 style="margin: 0; font-size: 22px; color: #333;">Your File is Ready to Download</h2>
+                </td>
+                </tr>
+                <tr>
+                <td style="color: #555555; font-size: 16px; line-height: 1.6; padding: 10px 0;">
+                    <p>Hello,</p>
+                    <p>Your requested file is ready. Click the button below to download it.</p>
+                    <p><strong>Note:</strong> This link will expire on <span style="color:#d9534f;">{{expirationDate}}</span>.</p>
+                </td>
+                </tr>
+                <tr>
+                <td align="center" style="padding: 20px 0;">
+                    <a href="${link}" download="demo.png" style="background-color: #1e88e5; color: #ffffff; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; font-size: 16px;">Download File</a>
+                </td>
+                </tr>
+                <tr>
+                <td style="color: #888888; font-size: 14px; text-align: center; padding-top: 20px;">
+                    <p>If you did not request this file, you can safely ignore this message.</p>
+                </td>
+                </tr>
+                <tr>
+                <td style="text-align: center; color: #aaaaaa; font-size: 12px; padding-top: 20px;">
+                    &copy; {{year}} Filemoon. All rights reserved.
+                </td>
                 </tr>
             </table>
-
-        </body>
-        </html>
-`;
+            </td>
+        </tr>
+        </table>
+    </body>
+    </html>
+    `;
 };
 
 const shareFile = async (req, res) => {
@@ -101,14 +69,14 @@ const shareFile = async (req, res) => {
     const { email, fileId } = req.body;
     const link = `${process.env.DOMAIN}/api/file/download/${fileId}`;
     const options = {
-      from: process.env.EMAIL,
+      from: process.env.SMTP_EMAIL,
       to: email,
       subject: "Filemoon - New file received",
       html: getEmailTemplate(link),
     };
 
     const payload = {
-      senderId: req.user.id,
+      sender: req.user.id,
       receiverEmail: email,
       file: fileId,
     };
@@ -127,7 +95,7 @@ const shareFile = async (req, res) => {
 
 const fetchShareFile = async (req, res) => {
   try {
-    const history = await ShareModel.find({ user: req.user.senderId })
+    const history = await ShareModel.find({ sender: req.user.id })
       //   .populate("senderId", "fullname email mobile -_id")
       .populate("file")
       .sort({ createdAt: -1 });

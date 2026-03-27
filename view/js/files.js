@@ -37,6 +37,7 @@ const toggleDrawer = () => {
 const uploadFile = async (e) => {
   e.preventDefault();
   const uploadBtn = document.getElementById("upload-btn");
+
   try {
     const progress = document.getElementById("progress");
     const form = e.target;
@@ -181,9 +182,14 @@ const openModelForShare = (id, filename) => {
 const shareFile = async (id, e) => {
   const sendButton = document.getElementById("send-btn");
   const form = e.target;
+
   try {
     e.preventDefault();
     sendButton.disabled = true;
+    sendButton.innerHTML = `
+            <i class="fa fa-spinner fa-spin mr-2"></i>
+            Processing
+        `;
 
     const email = form.elements.email.value.trim();
     const payload = {

@@ -27,14 +27,25 @@ const fetchHistory = async () => {
   try {
     const { data } = await axios.get("/api/share", getToken());
     const table = document.getElementById("table");
+    const notFoundHistoryUi = `
+          <div>
+            <h1>Oops ! You have not shared any file yet..</h1>
+          </div>
+    `;
+
+    if (data.length === 0) {
+      table.innerHTML = notFoundHistoryUi;
+      return;
+    }
+
     for (let item of data) {
-      console.log(item);
       const historyUi = ` 
       <tr class="text-gray-600 border-b border-gray-100">
             <td class="py-4 pl-5 capitalize">${item.file.filename}</td>
             <td>${item.receiverEmail}</td>
             <td>${moment(item.createdAt).format("DD MMM YYYY, hh:mm A")}</td>
-      </tr>`;
+      </tr>
+      `;
       table.innerHTML += historyUi;
     }
   } catch (error) {
