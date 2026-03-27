@@ -75,9 +75,14 @@ const uploadFile = async (e) => {
   }
 };
 
-const getSize = (size) => {
-  const mb = size / 1000 / 1000;
-  return mb.toFixed(1);
+const getSize = (bytes) => {
+  if (bytes === 0) return "0 Bytes";
+
+  const sizes = ["Bytes", "Kb", "Mb", "Gb", "Tb"];
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+
+  const value = bytes / Math.pow(1024, i);
+  return `${value.toFixed(1)} ${sizes[i]}`;
 };
 const fetchFiles = async () => {
   try {
@@ -89,7 +94,7 @@ const fetchFiles = async () => {
       <tr class="text-gray-600 border-b border-gray-100">
             <td class="py-4 pl-5 capitalize">${file.filename}</td>
             <td class="capitalize">${file.filetype}</td>
-            <td>${getSize(file.size)} MB</td>
+            <td>${getSize(file.size)}</td>
             <td>${moment(file.createdAt).format("DD MMM YYYY, hh:mm A")}</td>
             <td>
               <div class="spcae-x-3">
