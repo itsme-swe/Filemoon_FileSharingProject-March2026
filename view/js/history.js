@@ -28,8 +28,8 @@ const fetchHistory = async () => {
     const { data } = await axios.get("/api/share", getToken());
     const table = document.getElementById("table");
     const notFoundHistoryUi = `
-          <div>
-            <h1>Oops ! You have not shared any file yet..</h1>
+          <div class="p-16 text-center">
+            <h1 class="text-gray-500 text-4xl">Oops ! You have not shared any file yet..</h1>
           </div>
     `;
 

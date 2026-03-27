@@ -95,10 +95,12 @@ const shareFile = async (req, res) => {
 
 const fetchShareFile = async (req, res) => {
   try {
+    const { limit } = req.query;
     const history = await ShareModel.find({ sender: req.user.id })
       //   .populate("senderId", "fullname email mobile -_id")
       .populate("file")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .limit(limit);
     res.status(201).json(history);
   } catch (err) {
     res.status(500).json({ message: err.message });
