@@ -16,6 +16,7 @@ const logout = () => {
 
 window.onload = () => {
   showUserDetails();
+  fetchFilesReport();
   fetchRecentFiles();
   fetchRecentSharedFiles();
 };
@@ -76,7 +77,7 @@ const fetchRecentSharedFiles = async () => {
       const recentShareFileUi = `
                <div class="flex justify-between items-start">
                 <div>
-                  <h1 class="font-medium text-zinc-500 capitalize" >${item.file.filename}</h1>
+                  <h1 class="font-medium text-zinc-500 capitalize" >${item.file?.filename || "File not available"}</h1>
                   <small class="text-gray-500 text-sm">${item.receiverEmail}</small>
                 </div>
                 <p class="text-sm text-gray-600">${moment(item.createdAt).format("DD MMM YYYY, hh:mm A")}</p>
@@ -87,4 +88,42 @@ const fetchRecentSharedFiles = async () => {
   } catch (err) {
     toast.error(err.response ? err.response.data.message : err.message);
   }
+};
+
+const fetchFilesReport = async () => {
+  try {
+    const { data } = await axios.get("/api/dashboard", getToken());
+    const filesSummaryBox = document.getElementById("report-card");
+    for (let item of data) {
+      const filesSummaryUi = `
+              <div
+            class="overflow-hidden relative bg-white rounded-lg shadow hover:shadow-lg h-40 flex items-center justify-center flex-col">
+                  <h1 class="text-xl font-semibold text-gray-600 capitalize">${item.type.split("/")[0]}</h1>
+                  <p class="text-4xl font-bold">${item.total}</p>
+                  <div class="flex justify-center items-center w-[100px] h-[100px] rounded-full absolute top-7 -left-4"
+                      style="background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);">
+                      <i class="ri-live-fill text-4xl text-white"></i>
+                  </div>
+          </div>
+      `;
+      filesSummaryBox.innerHTML += filesSummaryUi;
+    }
+  } catch (err) {
+    toast.error(err.response ? err.response.data.message : err.message);
+  }
+};
+
+const uploadProfileImage = () => {
+  const input = document.createElement("input");
+  const profileImg = document.getElementById("profile-img");
+  input.type = "file";
+  input.accept = "image/*"; // This is how we allow any extension image to be uploaded
+  input.click();
+
+  // ⭐ This code works when file get selected
+  input.onchange = () => {
+    const file = input.files[0];
+    const imgURL = URL.createObjectURL(file); // To create URL of any file
+    profileImg.src = imgURL;
+  };
 };

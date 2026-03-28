@@ -23,7 +23,7 @@
       style="width: 250px; transition: 0.4s ;">
 
       <div class="flex flex-col items-center">
-        <img src="../avt.png" width="80" alt="profile picture">
+        <img src="../avt.png" width="80" id="profile-img" alt="profile picture" onclick="uploadProfileImage()">
         <h1 class="text-ld font-semibold text-white capitalize" id="fullname"></h1>
         <p class="text-ld text-gray-100" id="email"></p>
       </div>
@@ -77,77 +77,26 @@
       </nav>
       <div class="p-6 space-y-4">
         <h1 class="text-lg font-medium">Dashboard</h1>
+        <div id="report-card" class="grid grid-cols-4 gap-8 mb-8">
 
+        </div>
         <div class="grid grid-cols-4 gap-8">
-
-          <div
-            class="overflow-hidden relative bg-white rounded-lg shadow hover:shadow-lg h-40 flex items-center justify-center flex-col">
-            <h1 class="text-xl font-semibold text-gray-600">Videos</h1>
-            <p class="text-4xl font-bold">25609</p>
-            <div class="flex justify-center items-center w-[100px] h-[100px] rounded-full absolute top-7 -left-4"
-              style="background-image: linear-gradient(to right, #b8cbb8 0%, #b8cbb8 0%, #b465da 0%, #cf6cc9 33%, #ee609c 66%, #ee609c 100%);">
-              <i class="ri-live-fill text-4xl text-white"></i>
-            </div>
-          </div>
-
-          <div
-            class="overflow-hidden relative bg-white rounded-lg shadow hover:shadow-lg h-40 flex items-center justify-center flex-col">
-            <h1 class="text-xl font-semibold text-gray-600">Audio</h1>
-            <p class="text-4xl font-bold">700</p>
-            <div class="flex justify-center items-center w-[100px] h-[100px] rounded-full absolute top-7 -left-4"
-              style="background-image: linear-gradient(to right, #6a11cb 0%, #2575fc 100%);">
-              <i class="ri-folder-music-fill text-4xl text-white"></i>
-            </div>
-          </div>
-
-          <div
-            class="overflow-hidden relative bg-white rounded-lg shadow hover:shadow-lg h-40 flex items-center justify-center flex-col">
-            <h1 class="text-xl font-semibold text-gray-600">PDF</h1>
-            <p class="text-4xl font-bold">25609</p>
-            <div class="flex justify-center items-center w-[100px] h-[100px] rounded-full absolute top-7 -left-4"
-              style="background-image: linear-gradient(to top, #ff0844 0%, #ffb199 100%);">
-              <i class="ri-file-pdf-2-fill text-4xl text-white"></i>
-            </div>
-          </div>
-
-          <div
-            class="overflow-hidden relative bg-white rounded-lg shadow hover:shadow-lg h-40 flex items-center justify-center flex-col">
-            <h1 class="text-xl font-semibold text-gray-600">Image</h1>
-            <p class="text-4xl font-bold">25609</p>
-            <div class="flex justify-center items-center w-[100px] h-[100px] rounded-full absolute top-7 -left-4"
-              style="background-image: linear-gradient(to top, #0ba360 0%, #3cba92 100%);">
-              <i class="ri-folder-image-fill text-4xl text-white"></i>
-            </div>
-          </div>
-
           <div class="col-span-2 overflow-hidden relative bg-white rounded-lg shadow hover:shadow-lg p-6 space-y-3">
-
             <h1 class="text-lg text-black font-semibold  border-b pb-4 border-gray-100">Recent Files</h1>
             <div class="space-y-4" id="recent-files-box">
 
             </div>
-
           </div>
 
           <div class="col-span-2 overflow-hidden relative bg-white rounded-lg shadow hover:shadow-lg p-6 space-y-3">
-
             <h1 class="text-lg text-black font-semibold  border-b pb-4 border-gray-100">Recent Shared</h1>
             <div class="space-y-4" id="recent-shared-box">
 
             </div>
-
           </div>
-
         </div>
-
-
-
       </div>
-  </div>
-  </div>
-
-  </section>
-
+    </section>
   </div>
 
   <script src="../js/env.js"></script>
