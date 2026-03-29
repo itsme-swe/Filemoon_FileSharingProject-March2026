@@ -2,6 +2,7 @@ axios.defaults.baseURL = SERVER;
 
 window.onload = () => {
   fetchFiles();
+  fetchImage();
 };
 
 const getToken = () => {
@@ -206,5 +207,47 @@ const shareFile = async (id, e) => {
     toast.error(error.message ? error.response.data.message : error.message);
   } finally {
     Swal.close();
+  }
+};
+
+const uploadProfileImage = () => {
+  try {
+    const input = document.createElement("input");
+    const profileImg = document.getElementById("profile-img");
+    input.type = "file";
+    input.accept = "image/*"; // This is how we allow any extension image to be uploaded
+    input.click();
+
+    // ⭐ This code works when file get selected
+    input.onchange = async () => {
+      const file = input.files[0];
+      const formData = new FormData();
+      formData.append("picture", file);
+      await axios.post("/api/profile-img", formData, getToken());
+      const profilePicUrl = URL.createObjectURL(file);
+      profileImg.src = profilePicUrl;
+    };
+  } catch (error) {
+    toast.error(err.response ? err.response.data.message : err.message);
+  }
+};
+
+const fetchImage = async () => {
+  try {
+    const options = {
+      responseType: "blob",
+      ...getToken(),
+    };
+    const { data } = await axios.get("/api/profile-img", options);
+    const picURL = URL.createObjectURL(data);
+    const profileImg = document.getElementById("profile-img");
+    profileImg.src = picURL;
+  } catch (err) {
+    if (!err.response) {
+      return toast.error(err.message);
+    }
+    const error = await err.response.data.text();
+    const { message } = JSON.parse(error);
+    toast.error(message);
   }
 };
