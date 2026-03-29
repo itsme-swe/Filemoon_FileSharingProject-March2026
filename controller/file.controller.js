@@ -14,7 +14,6 @@ const getType = (type) => {
 
 const createFile = async (req, res) => {
   try {
-    console.log(req.user);
     const { filename } = req.body;
     const file = req.file;
     const payload = {

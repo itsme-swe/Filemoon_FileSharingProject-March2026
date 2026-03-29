@@ -26,7 +26,12 @@ const upload = multer({
   },
 });
 
-const { signup, login } = require("./controller/user.controller");
+const {
+  signup,
+  login,
+  updateProfileImage,
+  fetchProfileImage,
+} = require("./controller/user.controller");
 const {
   createFile,
   fetchFiles,
@@ -74,6 +79,13 @@ app.get("/history", (req, res) => {
 // 🌟 Backend APIs (End Points)
 app.post("/api/signup", signup);
 app.post("/api/login", login);
+app.post(
+  "/api/profile-img",
+  AuthMiddleware,
+  upload.single("picture"),
+  updateProfileImage,
+);
+app.get("/api/profile-img", AuthMiddleware, fetchProfileImage);
 app.post("/api/file", AuthMiddleware, upload.single("file"), createFile); //🌟 Here we are using route level middleware
 app.get("/api/file", AuthMiddleware, fetchFiles);
 app.delete("/api/file/:id", AuthMiddleware, deleteFile);
