@@ -159,7 +159,6 @@ const downloadFile = async (id, filename, button) => {
     const err = await error.response.data.text();
     const { message } = JSON.parse(err);
     toast.error(message);
-    console.log(err);
   } finally {
     button.innerHTML = '<i class="ri-download-line"></i>';
     button.disabled = false;
